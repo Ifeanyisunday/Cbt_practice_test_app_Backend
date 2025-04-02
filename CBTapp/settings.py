@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework_simplejwt',
     'exam',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -52,9 +53,31 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'CBTapp.urls'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Frontend URL for development
+    # "https://yourfrontenddomain.com",  # Production frontend URL
+]
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+    'PATCH',
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
@@ -130,6 +153,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'exam.CustomUser'
 
+
+DJOSER = {
+    'USER_CREATE_PASSWORD_RETYPE': True,  # Password confirmation during registration
+    'LOGIN_FIELD': 'email',  # Allow users to login using email instead of username
+    # 'SERIALIZERS': {
+    #     'user_create': 'exam.serializers.CustomUserSerializer',  # Custom registration serializer (optional)
+    # },
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -140,8 +172,10 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    # 'AUTH_HEADER_TYPES': ('Bearer',),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 

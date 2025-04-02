@@ -1,8 +1,6 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
 
 from .views import QuestionViewSet
-
 
 urlpatterns = [
     path('questions/<int:amount>/<str:category>/', QuestionViewSet.as_view({'get': 'list_with_params'}), name='questions'),
@@ -16,3 +14,4 @@ urlpatterns = [
 
 # refresh_token = http://127.0.0.1:8000/auth/jwt/refresh/
 
+# http://127.0.0.1:8000/auth/token/login/
