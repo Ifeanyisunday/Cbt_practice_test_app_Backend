@@ -18,21 +18,26 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-os.environ["DJANGO_SECRET_KEY"] = "your-secret-key-here"
-os.environ["DEBUG"] = "False"
-os.environ["ALLOWED_HOSTS"] = "your-backend.onrender.com"
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "insecure-key-for-dev-only")
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1").split(" ")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2vq-9_*=!r&0zzk5549tgzn#$@$7j$%wgjzqu&y7*&x2%gv78^'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = []
+# SECRET_KEY = 'django-insecure-2vq-9_*=!r&0zzk5549tgzn#$@$7j$%wgjzqu&y7*&x2%gv78^'
+#
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = False
+#
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -55,10 +60,12 @@ ALLOWED_HOSTS = ['your-backend.onrender.com']
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ALLOW_ALL_ORIGINS = True  # Or whitelist specific origins
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -114,9 +121,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'CBTapp.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -124,9 +128,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -143,10 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -156,14 +153,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'exam.CustomUser'
@@ -172,9 +161,6 @@ AUTH_USER_MODEL = 'exam.CustomUser'
 DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,  # Password confirmation during registration
     'LOGIN_FIELD': 'email',  # Allow users to login using email instead of username
-    # 'SERIALIZERS': {
-    #     'user_create': 'exam.serializers.CustomUserSerializer',  # Custom registration serializer (optional)
-    # },
 }
 
 REST_FRAMEWORK = {
@@ -187,7 +173,6 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # 'AUTH_HEADER_TYPES': ('Bearer',),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
