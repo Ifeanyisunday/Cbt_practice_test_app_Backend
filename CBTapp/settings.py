@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2vq-9_*=!r&0zzk5549tgzn#$@$7j$%wgjzqu&y7*&x2%gv78^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -45,6 +45,17 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+ALLOWED_HOSTS = ['your-backend.onrender.com']
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+CORS_ALLOW_ALL_ORIGINS = True  # Or whitelist specific origins
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -58,10 +69,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'CBTapp.urls'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Frontend URL for development
-    # "https://yourfrontenddomain.com",  # Production frontend URL
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",  # Frontend URL for development
+# ]
 
 CORS_ALLOW_HEADERS = [
     'content-type',

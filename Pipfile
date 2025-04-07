@@ -10,6 +10,8 @@ django-cors-headers = "*"
 djoser = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
